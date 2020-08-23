@@ -1,0 +1,2 @@
+# Balg
+Boolean algebra parser
