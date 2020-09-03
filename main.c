@@ -58,10 +58,9 @@ int evaluate(SExpression *e, int input)
     }
 }
 
-int main(void)
+int main(int argc, char *args[])
 {
-    char test[] = "(!a->(b->c))";
-    SExpression *e = getAST(test);
+    SExpression *e = getAST(args[1]);
 
     printf("c b a =\n");
 
