@@ -35,15 +35,23 @@ SExpression *getAST(const char *expr)
     return expression;
 }
 
-int evaluate(SExpression *e)
+int evaluate(SExpression *e, int input)
 {
     switch (e->type) {
         case eVALUE:
-            return e->value;
-        case eMULTIPLY:
-            return evaluate(e->left) * evaluate(e->right);
-        case eADD:
-            return evaluate(e->left) + evaluate(e->right);
+	    return ((1 << (e->value - 97)) & input) != 0;
+        case eOR:
+            return evaluate(e->left, input) || evaluate(e->right, input);
+        case eAND:
+            return evaluate(e->left, input) && evaluate(e->right, input);
+	case eNOT:
+            return !evaluate(e->left, input);
+	case eIMPLY:
+	    if (evaluate(e->left, input)) {
+	        return evaluate(e->right, input);
+	    } else {
+		return 1;
+	    }
         default:
             /* should not be here */
             return 0;
@@ -52,10 +60,16 @@ int evaluate(SExpression *e)
 
 int main(void)
 {
-    char test[] = " 4 + 2*10 + 3*( 5 + 1 )";
+    char test[] = "(!a->(b->c))";
     SExpression *e = getAST(test);
-    int result = evaluate(e);
-    printf("Result of '%s' is %d\n", test, result);
+
+    printf("c b a =\n");
+
+    for (int i = 0; i < 8; i++) {
+	    int result = evaluate(e, i);
+	    printf("%d %d %d %d\n", (4 & i) != 0, (2 & i) != 0, (1 & i) != 0, result);
+    }
+
     deleteExpression(e);
     return 0;
 }

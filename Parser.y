@@ -34,8 +34,10 @@ int yyerror(SExpression **expression, yyscan_t scanner, const char *msg) {
 
 %token TOKEN_LPAREN   "("
 %token TOKEN_RPAREN   ")"
-%token TOKEN_PLUS     "+"
-%token TOKEN_STAR     "*"
+%token TOKEN_OR       "+"
+%token TOKEN_AND      "."
+%token TOKEN_IMPLY    "->"
+%token TOKEN_NOT      "!"
 %token <value> TOKEN_NUMBER "number"
 
 %type <expression> expr
@@ -43,8 +45,10 @@ int yyerror(SExpression **expression, yyscan_t scanner, const char *msg) {
 /* Precedence (increasing) and associativity:
    a+b+c is (a+b)+c: left associativity
    a+b*c is a+(b*c): the precedence of "*" is higher than that of "+". */
+%left "->"
 %left "+"
-%left "*"
+%left "."
+%left "!"
 
 %%
 
@@ -53,8 +57,10 @@ input
     ;
 
 expr
-    : expr[L] "+" expr[R] { $$ = createOperation( eADD, $L, $R ); }
-    | expr[L] "*" expr[R] { $$ = createOperation( eMULTIPLY, $L, $R ); }
+    : expr[L] "->" expr[R] { $$ = createOperation( eIMPLY, $L, $R ); }
+    | expr[L] "." expr[R] { $$ = createOperation( eAND, $L, $R ); }
+    | expr[L] "+" expr[R] { $$ = createOperation( eOR, $L, $R ); }
+    | "!" expr[E]         { $$ = createOperation( eNOT, $E, NULL ); }
     | "(" expr[E] ")"     { $$ = $E; }
     | "number"            { $$ = createNumber($1); }
     ;
