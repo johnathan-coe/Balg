@@ -10,7 +10,9 @@
 #include "../Lexer/Lexer.h"
 
 int yyerror(SExpression **expression, yyscan_t scanner, const char *msg) {
-    /* Add error handling routine as needed */
+    printf(msg);
+    printf("\n");
+    exit(1);
 }
 
 %}
