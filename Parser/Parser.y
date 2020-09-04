@@ -5,9 +5,9 @@
  * To generate the parser run: "bison Parser.y"
  */
 
-#include "Expression.h"
-#include "Parser.h"
-#include "Lexer.h"
+#include "../AST/Expression.h"
+#include "../Parser/Parser.h"
+#include "../Lexer/Lexer.h"
 
 int yyerror(SExpression **expression, yyscan_t scanner, const char *msg) {
     /* Add error handling routine as needed */

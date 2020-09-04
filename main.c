@@ -2,9 +2,9 @@
  * main.c file
  */
 
-#include "Expression.h"
-#include "Parser.h"
-#include "Lexer.h"
+#include "AST/Expression.h"
+#include "Parser/Parser.h"
+#include "Lexer/Lexer.h"
 
 #include <stdio.h>
 
