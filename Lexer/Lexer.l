@@ -33,9 +33,7 @@ void varToken(char* a);
 "!"          { return TOKEN_NOT; }
 "("          { return TOKEN_LPAREN; }
 ")"          { return TOKEN_RPAREN; }
-
-.            { continue; /* Ignore unexpected characters. */}
-
+.            { printf("Unexpected '%s', Ignoring...\n", yytext); continue; /* Ignore unexpected characters. */}
 %%
 
 int yyerror(const char *msg) {
