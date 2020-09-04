@@ -9,6 +9,8 @@
 // Defines ordering of values according to expression in varOrder
 #include "Lexer/Track.h"
 
+int b(int i) { return i ? 1 : 0; }
+
 int main(int argc, char *args[])
 {
     // Generate AST
@@ -32,7 +34,7 @@ int main(int argc, char *args[])
 	    int result = evaluate(e, i, symbols);
 	
 	    for (int s = 0; s < numSymbols; s++) {
-		printf("%d ", (i & symbols[varOrder[s]-97]) != 0);
+		printf("%d ", b(i & symbols[varOrder[s]-97]));
 	    }
 
 	    printf("%d\n", result);
