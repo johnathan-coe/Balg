@@ -6,7 +6,9 @@
 #include "AST/Expression.h"
 #include <stdio.h>
 #include <string.h>
-// Defines ordering of values according to expression in varOrder
+
+// Defines varOrder which is a list of variables in order of
+// appearance in args[1]
 #include "Lexer/Track.h"
 
 int b(int i) { return i ? 1 : 0; }
