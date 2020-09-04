@@ -34,12 +34,7 @@ int evaluate(SExpression *e, int input, int symbols[])
 {
     switch (e->type) {
         case eVALUE:
-	    if (symbols[e->value - 97] == -1) {
-		    printf("FATAL: %c not mapped! Specify a position for %c in the second argument\n", e->value, e->value);
-		    exit(0);
-	    }
-
-	    return ((1 << symbols[e->value - 97]) & input) != 0;
+	    return (symbols[e->value - 97] & input) != 0;
         case eOR:
             return evaluate(e->left, input, symbols) || evaluate(e->right, input, symbols);
         case eAND:
