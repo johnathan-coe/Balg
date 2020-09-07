@@ -1,6 +1,11 @@
 Balg
 ======
-Analyse and optimise boolean expressions
+Analyse and optimise boolean expressions. Built using flex and yacc.
+
+## Dependencies
+* Flex
+* Yacc
+* GCC
 
 ## Usage
 ```
