@@ -1,6 +1,6 @@
 # Makefile
 
-FILES	= Lexer/Lexer.c Parser/Parser.c AST/Expression.c AST/Util.c main.c
+FILES	= Lexer/Lexer.c Parser/Parser.c AST/Expression.c AST/Util.c Table/Table.c Optimiser/Optimiser.c main.c
 CC	= g++
 CFLAGS	= -g -ansi
 

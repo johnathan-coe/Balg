@@ -2,8 +2,10 @@
  * main.c file
  */
 
-#include "AST/Util.h"
 #include "AST/Expression.h"
+#include "AST/Util.h"
+#include "Table/Table.h"
+#include "Optimiser/Optimiser.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -11,10 +13,8 @@
 // appearance in args[1]
 #include "Lexer/Track.h"
 
-int b(int i) { return i ? 1 : 0; }
-
 void usage(char* name) {
-	printf("Usage: %s [EXPRESSION] [OPERATION]... \n"
+	printf("Usage: %s [OPERATION]... [EXPRESSION]\n"
 	       "Analyse and optimise boolean expressions\n"
 	       "\n"
 	       "Operations (Completed in order):\n"
@@ -34,40 +34,32 @@ void usage(char* name) {
 	       name);
 }
 
-int main(int argc, char *args[])
-{
+int main(int argc, char *args[]) {
+    // No argument specified, print usage
     if (argc == 1) {
         usage(args[0]); 
 	return 1;
     }
-
-    for (int i = 1; i < argc; i++) {}
-
+ 
     // Generate AST
-    SExpression *e = getAST(args[1]);
+    SExpression *e = getAST(args[argc-1]);
 
-    int symbols[26];
-
-    // Create bitmasks for each input symbol
-    int numSymbols = strlen(varOrder);
-    for (int i = 0; i < numSymbols; i++) {
-	char var = varOrder[i] - 97;
-	symbols[var] = (1 << (numSymbols - 1 - i));
-    }
-  
-    // Print header
-    for (int i = 0; i < numSymbols; i++) { printf("%c ", varOrder[i]); }
-    printf("\n");
-
-    // Generate truth table
-    for (int i = 0; i < (1 << numSymbols); i++) {
-	    int result = evaluate(e, i, symbols);
+    // No operations specified, make a truth table
+    if (argc == 2) {
+        printTable(e, varOrder);
+        deleteExpression(e);
 	
-	    for (int s = 0; s < numSymbols; s++) {
-		printf("%d ", b(i & symbols[varOrder[s]-97]));
-	    }
+	return 0; 
+    }
 
-	    printf("%d\n", result);
+    for (int i = 1; i < (argc-1); i++) {
+        if (!(strcmp("-t", args[i]) && strcmp("--truth-table", args[i]))) {
+            // Spit out a truth table
+            printTable(e, varOrder);
+	} else if (!(strcmp("-o", args[i]) || !strcmp("--optimise", args[i]))) {
+            // Optimise the AST
+            optimise(e);
+	}
     }
 	
     // Free memory
