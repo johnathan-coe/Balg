@@ -4,7 +4,7 @@ Analyse and optimise boolean expressions. Built using flex and yacc.
 
 ## Dependencies
 * Flex
-* Yacc
+* GNU Bison
 * GCC
 
 ## Usage
